@@ -21,12 +21,39 @@ const defaults={
  },
  back:{program:{x:50,y:47.97528728530829,w:81,s:27,f:'Georgia,serif'}}
 };
+const paperDefaults={
+  front:{
+    ...defaults.front,
+    heading:{...defaults.front.heading,y:26,s:36,b:false},
+    name:{...defaults.front.name,y:41,s:51,b:false},
+    intro:{...defaults.front.intro,y:48.5,i:true},
+    training:{...defaults.front.training,y:53.5,s:25},
+    trainingDate:{...defaults.front.trainingDate,y:57.5},
+    hours:{...defaults.front.hours,y:59.5},
+    extra:{...defaults.front.extra,y:63.5,s:15,b:false},
+    trainers:{...defaults.front.trainers,y:72}
+  },
+  back:defaults.back
+};
+const templates={
+  doradcy:{layout:defaults,background:certificateBackground},
+  paper:{layout:paperDefaults,background:paperCertificateBackground},
+  modern:{layout:defaults,background:modernCertificateBackground}
+};
+
 let side='front',selected=null,drag=null;
 let previewPersonIndex=0;
 const state={template:'doradcy',layouts:structuredClone(defaults)};
+const layoutsByTemplate=Object.fromEntries(
+  Object.entries(templates).map(([key,{layout}])=>[key,structuredClone(layout)])
+);
+layoutsByTemplate.doradcy=state.layouts;
 const page=$('page'),bg=$('background');
 function currentLayout(){return state.layouts[side]}
-function setBackground(){bg.src=certificateBackground;page.classList.toggle('back',side==='back');$('pageLabel').textContent=side==='front'?'Przód zaświadczenia':'Tył zaświadczenia (opcjonalnie)';renderFields()}
+function selectedBackground(){
+  return templates[state.template].background;
+}
+function setBackground(){bg.src=selectedBackground();page.classList.toggle('paper-template',state.template==='paper');page.classList.toggle('back',side==='back');$('pageLabel').textContent=side==='front'?'Przód zaświadczenia':'Tył zaświadczenia (opcjonalnie)';renderFields()}
 function getPeople(){return ($('peopleList').value||'').split(/\r?\n/).map(v=>v.trim()).filter(Boolean)}
 function padNumber(n,w){return String(n).padStart(Math.max(1,+w||1),'0')}
 function buildCertNo(index){const n=(+$('startN').value||0)+index;return ($('certPattern').value||'{N}').replace(/\{N\}/g,padNumber(n,$('padN').value))}
@@ -64,6 +91,15 @@ function syncInputs(){updatePeopleCount();renderFields()}
 ['peopleList','certPattern','startN','padN','trainingName','hours','date','issueDate','place','extraText','trainersList','programText'].forEach(id=>$(id).addEventListener('input',syncInputs));
 
 
+$('templateSelect').addEventListener('change',e=>{
+  state.template=e.target.value;
+  state.layouts=layoutsByTemplate[state.template];
+  selected=null;
+  document.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+  updateTools();
+  setBackground();
+});
+
 document.querySelectorAll('[data-side]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-side]').forEach(x=>x.classList.remove('active'));b.classList.add('active');side=b.dataset.side;selected=null;updateTools();setBackground()}));
 function selectField(el){document.querySelectorAll('.editable,.asset,.signature-fallback').forEach(x=>x.classList.remove('selected'));selected=el;el.classList.add('selected');updateTools()}
 function updateTools(){const tools=$('fieldTools');if(!selected){tools.classList.add('disabled');$('selectedName').textContent='Kliknij pole lub podpis na dokumencie.';return}tools.classList.remove('disabled');const key=selected.dataset.key;const c=currentLayout()[key];$('selectedName').textContent=key==='signature'?'Wybrany element: miejsce na podpis elektroniczny':'Wybrane pole: '+key;$('fontSize').disabled=key==='signature';$('fontFamily').disabled=key==='signature';$('boldBtn').disabled=key==='signature';$('italicBtn').disabled=key==='signature';$('fontSize').value=c.s||12;$('fieldWidth').value=c.w;$('fontFamily').value=c.f||'Arial,sans-serif';$('boldBtn').classList.toggle('active',!!c.b);$('italicBtn').classList.toggle('active',!!c.i)}
@@ -71,7 +107,7 @@ document.querySelectorAll('.editable').forEach(el=>{el.addEventListener('pointer
 {const el=$('signatureFallback');el.dataset.key='signature';el.addEventListener('pointerdown',e=>{if(side!=='front')return;selectField(el);const r=page.getBoundingClientRect();const c=state.layouts.front.signature;drag={id:e.pointerId,key:'signature',dx:e.clientX-(r.left+c.x/100*r.width),dy:e.clientY-(r.top+c.y/100*r.height)};el.setPointerCapture(e.pointerId);e.preventDefault()})}
 page.addEventListener('pointermove',e=>{if(!drag)return;const r=page.getBoundingClientRect();let x=(e.clientX-r.left-drag.dx)/r.width*100,y=(e.clientY-r.top-drag.dy)/r.height*100;const snap=1.2;let snapX=false,snapY=false;if(Math.abs(x-50)<snap){x=50;snapX=true}if(Math.abs(y-50)<snap){y=50;snapY=true}x=Math.max(3,Math.min(97,x));y=Math.max(3,Math.min(97,y));Object.assign(currentLayout()[drag.key],{x,y});$('snapGuideV').style.display=snapX?'block':'none';$('snapGuideV').style.left=x+'%';$('snapGuideH').style.display=snapY?'block':'none';$('snapGuideH').style.top=y+'%';renderFields()});
 page.addEventListener('pointerup',()=>{drag=null;$('snapGuideV').style.display=$('snapGuideH').style.display='none'});
-$('fontSize').addEventListener('input',e=>{if(selected&&selected.dataset.key!=='signature'){currentLayout()[selected.dataset.key].s=+e.target.value;renderFields()}});$('fieldWidth').addEventListener('input',e=>{if(selected){currentLayout()[selected.dataset.key].w=+e.target.value;renderFields()}});$('fontFamily').addEventListener('change',e=>{if(selected&&selected.dataset.key!=='signature'){currentLayout()[selected.dataset.key].f=e.target.value;renderFields()}});$('boldBtn').addEventListener('click',()=>{if(selected&&selected.dataset.key!=='signature'){const c=currentLayout()[selected.dataset.key];c.b=!c.b;renderFields();updateTools()}});$('italicBtn').addEventListener('click',()=>{if(selected&&selected.dataset.key!=='signature'){const c=currentLayout()[selected.dataset.key];c.i=!c.i;renderFields();updateTools()}});document.querySelectorAll('[data-align]').forEach(b=>b.addEventListener('click',()=>{if(selected&&selected.dataset.key!=='signature'){currentLayout()[selected.dataset.key].a=b.dataset.align;renderFields()}}));$('centerField').addEventListener('click',()=>{if(selected){currentLayout()[selected.dataset.key].x=50;renderFields()}});$('resetLayout').addEventListener('click',()=>{state.layouts[side]=structuredClone(defaults[side]);selected=null;updateTools();renderFields()});
+$('fontSize').addEventListener('input',e=>{if(selected&&selected.dataset.key!=='signature'){currentLayout()[selected.dataset.key].s=+e.target.value;renderFields()}});$('fieldWidth').addEventListener('input',e=>{if(selected){currentLayout()[selected.dataset.key].w=+e.target.value;renderFields()}});$('fontFamily').addEventListener('change',e=>{if(selected&&selected.dataset.key!=='signature'){currentLayout()[selected.dataset.key].f=e.target.value;renderFields()}});$('boldBtn').addEventListener('click',()=>{if(selected&&selected.dataset.key!=='signature'){const c=currentLayout()[selected.dataset.key];c.b=!c.b;renderFields();updateTools()}});$('italicBtn').addEventListener('click',()=>{if(selected&&selected.dataset.key!=='signature'){const c=currentLayout()[selected.dataset.key];c.i=!c.i;renderFields();updateTools()}});document.querySelectorAll('[data-align]').forEach(b=>b.addEventListener('click',()=>{if(selected&&selected.dataset.key!=='signature'){currentLayout()[selected.dataset.key].a=b.dataset.align;renderFields()}}));$('centerField').addEventListener('click',()=>{if(selected){currentLayout()[selected.dataset.key].x=50;renderFields()}});$('resetLayout').addEventListener('click',()=>{state.layouts[side]=structuredClone(templates[state.template].layout[side]);selected=null;updateTools();renderFields()});
 
 
 $('showCenter').addEventListener('change',e=>document.querySelectorAll('.guide').forEach(x=>x.style.display=e.target.checked?'block':'none'));$('showSafe').addEventListener('change',e=>$('page').querySelector('.safe-area').style.display=e.target.checked?'block':'none');$('showGrid').addEventListener('change',e=>$('page').querySelector('.grid-overlay').style.display=e.target.checked?'block':'none');
@@ -83,13 +119,23 @@ $('loadProject').addEventListener('change',async e=>{
   if(!file)return;
   try{
     const project=JSON.parse(await file.text());
+    const importedTemplate=project.state?.template;
+    state.template=Object.hasOwn(templates,importedTemplate)?importedTemplate:'doradcy';
+    const layoutDefaults=templates[state.template].layout;
     const layouts=project.state?.layouts;
     state.layouts={
-      front:{...structuredClone(defaults.front),...(project.state?.template==='doradcy'?layouts?.front:{})},
-      back:{...structuredClone(defaults.back),...layouts?.back}
+      front:{
+        ...structuredClone(layoutDefaults.front),
+        ...(importedTemplate===state.template?layouts?.front:{})
+      },
+      back:{...structuredClone(layoutDefaults.back),...layouts?.back}
     };
-    if(project.state?.template!=='doradcy')state.layouts.front.signature=structuredClone(defaults.front.signature);
-    else state.layouts.front.signature={...defaults.front.signature,...layouts?.front?.signature};
+    state.layouts.front.signature={...layoutDefaults.front.signature,...(importedTemplate===state.template?layouts?.front?.signature:{})};
+    layoutsByTemplate[state.template]=state.layouts;
+    $('templateSelect').value=state.template;
+    selected=null;
+    document.querySelectorAll('.selected').forEach(el=>el.classList.remove('selected'));
+    updateTools();
     for(const key of Object.keys(projectData().fields)){
       if(project.fields?.[key]!=null)$(key).value=project.fields[key];
     }
@@ -113,14 +159,20 @@ function loadImg(src){return new Promise((resolve,reject)=>{const i=new Image();
 function wrapCanvasText(ctx,text,maxWidth){const lines=[];String(text||'').split(/\n/).forEach(par=>{if(!par){lines.push('');return}const words=par.split(/\s+/);let line='';words.forEach(word=>{const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test});if(line)lines.push(line)});return lines}
 async function renderCertificateCanvas(personIndex,pageSide){
   const W=1655,H=2340,canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
-  const background=await loadImg(certificateBackground);ctx.drawImage(background,0,0,W,H);
+  const background=await loadImg(selectedBackground());ctx.drawImage(background,0,0,W,H);
   const oldSide=side,oldIndex=previewPersonIndex;side=pageSide;previewPersonIndex=personIndex;
   const layout=state.layouts[pageSide];
   for(const [key,cfg] of Object.entries(layout)){
     const text=fieldText(key);if(!text)continue;
     const scale=W/760;const size=(cfg.s||14)*scale;ctx.save();ctx.fillStyle='#1c2230';ctx.textAlign=cfg.a||'center';ctx.textBaseline='middle';ctx.font=`${cfg.i?'italic ':''}${cfg.b?'700':'400'} ${size}px ${String(cfg.f||'Arial').split(',')[0].replace(/["']/g,'')}`;
     const maxW=W*(cfg.w||70)/100;const lines=wrapCanvasText(ctx,text,maxW);const lh=size*1.22;const x=W*cfg.x/100;const y=H*cfg.y/100-(lines.length-1)*lh/2;
-    lines.forEach((line,j)=>{let tx=x;if((cfg.a||'center')==='left')tx=x-maxW/2;if((cfg.a||'center')==='right')tx=x+maxW/2;ctx.fillText(line,tx,y+j*lh,maxW)});ctx.restore();
+    lines.forEach((line,j)=>{let tx=x;if((cfg.a||'center')==='left')tx=x-maxW/2;if((cfg.a||'center')==='right')tx=x+maxW/2;ctx.fillText(line,tx,y+j*lh,maxW)});
+    if(state.template==='paper'&&key==='name'){
+      const underlineY=H*cfg.y/100+lines.length*lh/2+4*scale;
+      ctx.fillStyle='#606068';
+      ctx.fillRect(x-maxW/2,underlineY,maxW,scale);
+    }
+    ctx.restore();
   }
   if(pageSide==='front'){
     const {x,y,w,h}=layout.signature;

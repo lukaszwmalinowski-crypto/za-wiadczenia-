@@ -13,3 +13,6 @@ Zaświadczenie ma domyślnie jedną stronę. Zaznacz „Dołącz tył do PDF-u�
 aby dodać drugą stronę. Projekt JSON zachowuje wybór i treść odwrotu.
 Starsze projekty bez zapisanego wyboru otwierają się z odznaczoną opcją. Starsze projekty korzystają
 z firmówki WUP i domyślnego układu dla doradców.
+
+Szablony Papierowy WUP i Nowoczesny WUP wybierzesz z listy szablonów. Przełączanie zachowuje
+dane formularza, a projekt JSON zapisuje aktywny szablon i jego układ.
