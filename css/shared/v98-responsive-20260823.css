@@ -1,0 +1,435 @@
+/* ======================================================================
+   V98 — RESPONSYWNOSC TELEFON + TABLET
+   Zakres: <= 1024 px. Reguly desktopowe pozostaja bez zmian.
+   ====================================================================== */
+
+@media (max-width: 1024px) {
+  html {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body.public-page,
+  body.course-page {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Wyzerowanie starych przesuniec zapisanych w CMS-ie. Czterokrotny
+     selektor ma wyzsza specyficznosc niz historyczne reguly CMS. */
+  [data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id] {
+    translate: 0 0 !important;
+    transform: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  img[data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id] {
+    width: auto !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Bezpieczne media i elementy formularzy. */
+  body.public-page img,
+  body.public-page video,
+  body.course-page img,
+  body.course-page video {
+    max-width: 100%;
+  }
+
+  body.public-page :where(input, select, textarea, button),
+  body.course-page :where(input, select, textarea, button) {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.public-page :where(input, select, textarea),
+  body.course-page :where(input, select, textarea) {
+    width: 100%;
+  }
+
+  body.public-page :where(.public-main, .training-showcase-main, .home-rd-main, .calendar-main),
+  body.course-page :where(.course-shell, .course-layout, .course-main, .course-content, .course-section, .course-section-body) {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Nawigacja: duze i wycentrowane pola dotykowe. */
+  body.portal-v66 .site-nav,
+  body.portal-v67 .site-nav,
+  body.portal-v68 .site-nav {
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  body.portal-v66 .site-nav a,
+  body.portal-v67 .site-nav a,
+  body.portal-v68 .site-nav a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 54px !important;
+    padding: 14px 16px !important;
+    text-align: center !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Tablet: czytelne dwu-/jednokolumnowe uklady bez wychodzenia poza ekran. */
+  body.public-page :where(
+    .home-rd-program-grid,
+    .training-topics-grid,
+    .training-feedback-grid,
+    .training-gallery-grid,
+    .signup-contact-grid,
+    .course-catalog-grid,
+    .online-catalog-grid
+  ) {
+    min-width: 0 !important;
+  }
+
+  body.course-page :where(
+    .course-workspace,
+    .course-workspace-head,
+    .course-workspace-grid,
+    .course-form-cards,
+    .course-form-cards--start,
+    .course-form-cards--final,
+    .compact-grid,
+    .choice-grid,
+    .headline-pair,
+    .legacy-media-grid,
+    .m1v3-grid,
+    .module-workbook-actions,
+    .module-workbook-buttons
+  ) {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Filmy i osadzenia — zawsze w granicach kolumny. */
+  body.course-page :where(
+    .course-media,
+    .course-media-frame,
+    .course-video,
+    .video-wrap,
+    .video-frame,
+    .responsive-video,
+    .media-frame,
+    .embedded-video,
+    .course-cover-banner,
+    .course-cover-banner--video,
+    .vertical-video-player
+  ) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body.course-page :where(iframe, video) {
+    display: block;
+    max-width: 100% !important;
+  }
+
+  body.course-page iframe:not(.vertical-video-frame iframe) {
+    width: 100% !important;
+  }
+
+  /* Kalendarz — zadna szeroka zawartosc nie rozsadza strony. */
+  .signup-calendar-section,
+  .signup-calendar-embedded,
+  .calendar-layout,
+  .calendar-board,
+  .calendar-details,
+  .calendar-month {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .calendar-month,
+  .calendar-table-wrap,
+  .calendar-scroll,
+  .calendar-overflow {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ======================================================================
+   TELEFON — do 600 px
+   ====================================================================== */
+@media (max-width: 600px) {
+  body.public-page,
+  body.course-page {
+    width: 100% !important;
+  }
+
+  body.portal-v66 .site-header-inner,
+  body.portal-v67 .site-header-inner,
+  body.portal-v68 .site-header-inner {
+    width: calc(100% - 24px) !important;
+    min-width: 0 !important;
+  }
+
+  body.portal-v66 .site-nav,
+  body.portal-v67 .site-nav,
+  body.portal-v68 .site-nav {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  body.portal-v66 .site-nav a,
+  body.portal-v67 .site-nav a,
+  body.portal-v68 .site-nav a {
+    width: 100% !important;
+    min-height: 56px !important;
+    font-size: 16px !important;
+  }
+
+  /* Sekcje i karty: jedna kolumna. */
+  body.public-page :where(
+    .home-rd-hero,
+    .home-eu-origin,
+    .home-rd-section-heading,
+    .home-rd-program-grid,
+    .home-rd-program,
+    .home-rd-program:nth-child(even),
+    .home-rd-process,
+    .home-rd-audience-grid,
+    .home-rd-final,
+    .training-showcase-hero,
+    .training-showcase-heading,
+    .training-showcase-grid,
+    .training-showcase-copy,
+    .training-topics-grid,
+    .training-method-grid,
+    .training-feedback-grid,
+    .training-feedback-points,
+    .training-gallery-grid,
+    .signup-public-hero,
+    .signup-contact-grid,
+    .calendar-layout,
+    .public-grid,
+    .public-card-grid,
+    .course-catalog-grid,
+    .online-catalog-grid,
+    .v68-online-original .v68-online-row
+  ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.public-page :where(
+    .home-rd-hero,
+    .home-eu-origin,
+    .home-rd-programs,
+    .home-rd-process,
+    .home-rd-audience,
+    .home-rd-final,
+    .public-section,
+    .training-showcase-section,
+    .training-gallery-section,
+    .training-feedback-section,
+    .signup-calendar-section
+  ) {
+    max-width: 100% !important;
+  }
+
+  body.public-page :where(h1, h2, h3, p, li, a, span, strong),
+  body.course-page :where(h1, h2, h3, h4, p, li, label, a, span, strong) {
+    overflow-wrap: anywhere;
+  }
+
+  /* Przyciski i akcje zawsze mieszcza sie w ekranie. */
+  body.public-page :where(
+    .home-rd-hero-actions,
+    .public-actions,
+    .signup-contact-actions,
+    .calendar-contact-actions,
+    .calendar-hero-actions
+  ),
+  body.course-page :where(
+    .intro-actions,
+    .course-actions,
+    .course-workspace-actions,
+    .course-workspace-actions--pdf,
+    .course-workspace-actions--progress,
+    .module-workbook-buttons,
+    .exercise-actions,
+    .form-actions
+  ) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  body.public-page :where(.public-btn, .home-rd-btn, .signup-contact-link, .calendar-form-btn),
+  body.course-page :where(button, .primary-action, .secondary-action, .course-button, .m1v3-button) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Formularze. */
+  body.public-page :where(form, fieldset, .form-grid, .signup-form, .calendar-form),
+  body.course-page :where(form, fieldset, .form-grid, .course-form, .compact-field, .course-participant-field) {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  body.public-page :where(input, select, textarea),
+  body.course-page :where(input, select, textarea) {
+    min-width: 0 !important;
+    width: 100% !important;
+    font-size: 16px !important;
+  }
+
+  /* Kurs: wszystkie podstawowe uklady w jedna kolumne. */
+  body.course-page :where(
+    .course-intro-content,
+    .course-intro-content--compact,
+    .course-workspace-head,
+    .course-workspace-grid,
+    .course-form-cards,
+    .course-form-cards--start,
+    .course-form-cards--final,
+    .compact-grid.two,
+    .compact-grid.three,
+    .choice-grid,
+    .headline-pair,
+    .legacy-media-grid,
+    .m1v3-grid,
+    .classification-options,
+    .habit-profile-details,
+    .module-workbook-buttons
+  ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.course-page .course-workspace {
+    width: calc(100% - 20px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 18px !important;
+  }
+
+  /* Media: pelna szerokosc karty/sekcji bez zmiany proporcji. */
+  body.course-page :where(
+    .course-media,
+    .course-media-frame,
+    .course-video,
+    .video-wrap,
+    .video-frame,
+    .responsive-video,
+    .media-frame,
+    .embedded-video,
+    .course-cover-banner,
+    .course-cover-banner--video
+  ),
+  body.course-page :where(video, iframe) {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  body.course-page .vertical-video-frame {
+    width: min(100%, 320px) !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+
+  body.course-page .vertical-video-frame iframe {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  body.course-page img,
+  body.public-page img {
+    height: auto !important;
+    max-width: 100% !important;
+  }
+
+  /* Terminarz: preferowany widok listy, a gdy pozostaje szeroka siatka —
+     mozna ja bezpiecznie przewijac poziomo. */
+  .calendar-board {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    max-width: 100%;
+  }
+
+  .calendar-list-item {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* ======================================================================
+   TABLET — 601–1024 px
+   ====================================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  body.portal-v66 .site-header-inner,
+  body.portal-v67 .site-header-inner,
+  body.portal-v68 .site-header-inner {
+    width: calc(100% - 40px) !important;
+  }
+
+  body.public-page :where(
+    .home-rd-program-grid,
+    .training-topics-grid,
+    .training-feedback-grid,
+    .training-gallery-grid,
+    .course-catalog-grid,
+    .online-catalog-grid
+  ) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.public-page :where(
+    .home-rd-hero,
+    .home-eu-origin,
+    .signup-public-hero,
+    .training-showcase-hero,
+    .calendar-layout
+  ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.course-page :where(
+    .course-intro-content,
+    .course-intro-content--compact,
+    .course-workspace-head,
+    .course-workspace-grid
+  ) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body.course-page :where(
+    .course-form-cards,
+    .compact-grid.three,
+    .choice-grid
+  ) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.course-page :where(video, iframe) {
+    max-width: 100% !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.public-page *,
+  body.course-page * {
+    scroll-behavior: auto !important;
+  }
+}

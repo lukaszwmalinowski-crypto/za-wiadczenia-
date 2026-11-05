@@ -1,0 +1,346 @@
+/* ======================================================================
+   V103 — PORZADEK KONTAKTU + TABLET PORTRAIT/LANDSCAPE + CIEMNE POWIERZCHNIE
+   ====================================================================== */
+
+:root{
+  --v103-dark:#1f2329;
+  --v103-dark-2:#292e36;
+  --v103-lime:#b6ff2e;
+  --v103-paper:#f4f6ef;
+}
+
+/* ----------------------------------------------------------------------
+   1. Duze turkusowo-zielone powierzchnie wracaja do ciemnego koloru
+      z poczatku portalu. Zieleń pozostaje jako akcent, nie jako duze tlo.
+   ---------------------------------------------------------------------- */
+body.public-page :is(
+  .home-rd-final,
+  .home-rd-story-badge,
+  .signup-intro-section,
+  .calendar-board
+)[style*="background-color: rgb(22, 135, 127)"]{
+  background:var(--v103-dark)!important;
+  border-color:rgba(255,255,255,.12)!important;
+  color:#fff!important;
+}
+
+body.public-page .home-rd-final[style*="background-color: rgb(22, 135, 127)"] :is(h2,p,span),
+body.public-page .home-rd-story-badge[style*="background-color: rgb(22, 135, 127)"] :is(strong,span),
+body.public-page .signup-intro-section[style*="background-color: rgb(22, 135, 127)"] :is(h2,p){
+  color:#fff!important;
+}
+
+body.public-page .home-rd-final[style*="background-color: rgb(22, 135, 127)"] > a{
+  border-color:var(--v103-lime)!important;
+  color:var(--v103-lime)!important;
+}
+
+/* Kalendarz: ciemna plansza, jasna typografia, jasne kontrolki i dni. */
+body.public-page .calendar-board[style*="background-color: rgb(22, 135, 127)"] :is(
+  h2,h3,.calendar-board-head p,.calendar-weekdays,.calendar-legend span
+){
+  color:#fff!important;
+}
+body.public-page .calendar-board[style*="background-color: rgb(22, 135, 127)"] .calendar-weekdays{
+  color:rgba(255,255,255,.72)!important;
+}
+body.public-page .calendar-board[style*="background-color: rgb(22, 135, 127)"] .calendar-legend{
+  border-top-color:rgba(255,255,255,.16)!important;
+}
+body.public-page .calendar-board[style*="background-color: rgb(22, 135, 127)"] :is(
+  .calendar-mini-btn,.calendar-arrow-btn,.calendar-mode-switch button
+){
+  background:#fff!important;
+  color:var(--v103-dark)!important;
+  border-color:rgba(255,255,255,.28)!important;
+}
+body.public-page .calendar-board[style*="background-color: rgb(22, 135, 127)"] .calendar-empty{
+  color:rgba(255,255,255,.76)!important;
+  border-color:rgba(255,255,255,.18)!important;
+  background:rgba(255,255,255,.06)!important;
+}
+
+/* ----------------------------------------------------------------------
+   2. Tablet — baza. Obejmuje klasyczne 768/820/834/1024 w pionie oraz
+      1024 w poziomie. Reset starych przesuniec CMS jest celowy.
+   ---------------------------------------------------------------------- */
+@media (min-width:700px) and (max-width:1024px){
+  body.public-page,
+  body.course-page{
+    overflow-x:hidden!important;
+  }
+
+  [data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id]{
+    translate:0 0!important;
+    transform:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+
+  body.public-page :is(.public-section,.training-showcase-section,.training-gallery-section,.training-feedback-section){
+    width:min(100% - 48px, 1120px)!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading){
+    gap:24px!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading) h2{
+    max-width:18ch!important;
+    font-size:clamp(38px,5.6vw,56px)!important;
+    line-height:1.02!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading) > p{
+    max-width:62ch!important;
+    font-size:17px!important;
+    line-height:1.62!important;
+  }
+
+  body.public-page .signup-calendar-section{
+    padding-left:24px!important;
+    padding-right:24px!important;
+  }
+
+  body.public-page .calendar-board,
+  body.public-page .calendar-details{
+    min-width:0!important;
+    width:100%!important;
+  }
+
+  body.public-page .calendar-controls{
+    flex-wrap:wrap!important;
+  }
+
+  body.public-page .signup-institution{
+    gap:34px!important;
+  }
+
+  body.public-page .v67-footer-logos{
+    gap:20px!important;
+  }
+
+  body.course-page :is(.course-section,.course-section-body,.course-workspace,.course-main){
+    min-width:0!important;
+    max-width:100%!important;
+  }
+
+  body.course-page :is(.course-figure,.legacy-media,.course-table-wrap){
+    max-width:100%!important;
+  }
+}
+
+/* ----------------------------------------------------------------------
+   3. Tablet pionowy — wiecej oddechu, jedna kolumna tam, gdzie poziomy
+      uklad byl zbyt ciasny.
+   ---------------------------------------------------------------------- */
+@media (min-width:700px) and (max-width:1024px) and (orientation:portrait){
+  body.portal-v66 .site-header-inner,
+  body.portal-v67 .site-header-inner,
+  body.portal-v68 .site-header-inner{
+    width:calc(100% - 40px)!important;
+    min-height:78px!important;
+  }
+
+  body.public-page :is(.training-showcase-hero,.signup-public-hero,.public-hero,.home-rd-hero){
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:30px!important;
+  }
+
+  body.portal-v68 .signup-public-hero-media,
+  body.portal-v68 .training-showcase-hero-media{
+    min-height:0!important;
+    height:auto!important;
+    aspect-ratio:16/9!important;
+  }
+  body.portal-v68 :is(.signup-public-hero-media,.training-showcase-hero-media) img{
+    min-height:0!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading){
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+
+  body.portal-v68 .signup-training-card{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:22px!important;
+    padding:30px 0!important;
+  }
+  body.portal-v68 .signup-training-media{
+    height:auto!important;
+    aspect-ratio:16/9!important;
+  }
+  body.portal-v68 .signup-training-content h3{
+    max-width:28ch!important;
+    font-size:clamp(30px,4.6vw,42px)!important;
+  }
+
+  body.public-page :is(.training-audience-grid,.training-method-grid,.training-feedback-grid,.home-rd-audience-grid){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+
+  body.public-page .calendar-layout{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:20px!important;
+  }
+
+  body.public-page .calendar-board-head,
+  body.public-page .calendar-mode-row{
+    align-items:flex-start!important;
+    flex-wrap:wrap!important;
+  }
+
+  body.public-page .signup-institution{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+
+  body.course-page :is(.course-intro-content,.course-intro-content--compact,.course-workspace-head,.course-workspace-grid){
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  body.course-page :is(.course-form-cards,.compact-grid.three,.choice-grid){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+/* ----------------------------------------------------------------------
+   4. Tablet poziomy 900–1180. To domyka m.in. iPad 10.2/10.9/11
+      przy 1024px i male ekrany poziome bez wymuszania mobilnej kolumny.
+   ---------------------------------------------------------------------- */
+@media (min-width:900px) and (max-width:1180px) and (orientation:landscape){
+  [data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id]{
+    translate:0 0!important;
+    transform:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    max-width:100%!important;
+  }
+
+  body.portal-v66 .site-header-inner,
+  body.portal-v67 .site-header-inner,
+  body.portal-v68 .site-header-inner{
+    width:calc(100% - 44px)!important;
+  }
+
+  body.public-page :is(.training-showcase-hero,.signup-public-hero,.public-hero,.home-rd-hero){
+    grid-template-columns:minmax(0,1.08fr) minmax(330px,.92fr)!important;
+    gap:30px!important;
+    align-items:center!important;
+  }
+
+  body.portal-v68 .signup-public-hero-media,
+  body.portal-v68 .training-showcase-hero-media{
+    min-height:0!important;
+    height:auto!important;
+    aspect-ratio:4/3!important;
+  }
+  body.portal-v68 :is(.signup-public-hero-media,.training-showcase-hero-media) img{
+    min-height:0!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading){
+    grid-template-columns:minmax(0,1.08fr) minmax(280px,.72fr)!important;
+    gap:34px!important;
+    align-items:start!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading) h2{
+    font-size:clamp(38px,4.4vw,54px)!important;
+  }
+
+  body.portal-v68 .signup-training-card{
+    grid-template-columns:250px minmax(0,1fr)!important;
+    gap:30px!important;
+  }
+  body.portal-v68 .signup-training-media{
+    height:auto!important;
+    aspect-ratio:4/3!important;
+  }
+  body.portal-v68 .signup-training-content h3{
+    font-size:clamp(28px,3.1vw,38px)!important;
+  }
+
+  body.public-page .calendar-layout{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  body.public-page .calendar-board-head,
+  body.public-page .calendar-mode-row{
+    flex-wrap:wrap!important;
+  }
+
+  body.course-page .course-intro-content{
+    grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr)!important;
+    gap:26px!important;
+  }
+  body.course-page .course-workspace-head{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  body.course-page :is(.course-form-cards,.compact-grid.three,.choice-grid){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+/* ----------------------------------------------------------------------
+   5. Szeroki tablet poziomy (iPad 11 / 12.9 / 13). Ograniczamy zakres
+      do urzadzen dotykowych, zeby nie zmieniac zwyklego desktopu 1366px.
+   ---------------------------------------------------------------------- */
+@media (min-width:1181px) and (max-width:1366px) and (orientation:landscape) and (hover:none) and (pointer:coarse){
+  [data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id]{
+    translate:0 0!important;
+    transform:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    max-width:100%!important;
+  }
+
+  body.public-page :is(.public-section,.training-showcase-section,.training-gallery-section,.training-feedback-section){
+    width:calc(100% - 64px)!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading){
+    gap:42px!important;
+  }
+
+  body.public-page :is(.public-section-head,.training-showcase-heading,.home-rd-section-heading) h2{
+    font-size:clamp(44px,4.2vw,58px)!important;
+  }
+
+  body.portal-v68 .signup-training-card{
+    grid-template-columns:300px minmax(0,1fr)!important;
+    gap:38px!important;
+  }
+
+  body.public-page .signup-calendar-section{
+    padding-left:32px!important;
+    padding-right:32px!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  body.public-page *,body.course-page *{scroll-behavior:auto!important;}
+}
+
+/* Na stronie zapisow dane kontaktowe wystepuja tylko przy wybranym terminie.
+   Dolna sekcja instytucjonalna prowadzi do jednej, dedykowanej strony Kontakt. */
+body.public-page .signup-institution-contact--single{
+  display:flex!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+}
+body.public-page .signup-institution-contact--single .public-btn{
+  width:auto!important;
+  min-width:210px!important;
+}
+@media (max-width:680px){
+  body.public-page .signup-institution-contact--single .public-btn{
+    width:100%!important;
+    min-width:0!important;
+  }
+}

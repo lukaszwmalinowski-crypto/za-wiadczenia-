@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Generator zaświadczeń dla doradców</title>
+<meta name="theme-color" content="#ffffff"/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<link rel="icon" type="image/png" href="assets/certyfikaty-192.png"/>
+<link rel="apple-touch-icon" href="assets/certyfikaty-180.png"/>
+<link href="css/app.css" rel="stylesheet"/>
+<link href="css/shared/responsive-v91.css" rel="stylesheet"/>
+<link href="css/shared/v98-responsive-20260823.css" rel="stylesheet"/>
+<link href="css/shared/v103-ui-polish-20260823.css" rel="stylesheet"/>
+<link href="css/shared/v111-mobile-fixes-20260824.css" rel="stylesheet"/></head>
+<body class="generator-page">
+<div class="app">
+<aside class="panel">
+<header class="brand"><img class="brand-logo" alt="Certyfikaty" src="assets/panel-logo.png"/><div><h1>Generator zaświadczeń</h1><p>WUP Katowice · wersja dla doradców</p></div></header>
+<section class="card">
+<h2>1. Szablon</h2>
+<label>Szablon zaświadczenia
+        <select id="templateSelect">
+<option value="doradcy">Dla doradców zawodowych</option>
+</select>
+</label>
+<div class="segmented"><button class="active" data-side="front">Przód</button><button data-side="back">Tył (opcjonalnie)</button></div>
+</section>
+<section class="card">
+<h2>2. Treść certyfikatu</h2>
+<label>Lista uczestników - jedna osoba w wierszu<textarea id="peopleList" placeholder="Jan Kowalski
+Anna Nowak" rows="7">Jan Kowalski
+Anna Nowak</textarea></label>
+<p class="hint"><strong id="peopleCount">2 osoby</strong> · Podgląd pokazuje pierwszą osobę z listy.</p>
+<label>Numer certyfikatu - wzór z symbolem {N}<input id="certPattern" type="text" value="RC/{N}/2026"/></label>
+<div class="grid2">
+<label>Numer początkowy<input id="startN" min="0" type="number" value="1"/></label>
+<label>Liczba cyfr<input id="padN" max="8" min="1" type="number" value="3"/></label>
+</div>
+<label>Nazwa szkolenia<textarea id="trainingName" rows="3">Biznesplan krok po kroku</textarea></label>
+<div class="grid2">
+<label>Liczba godzin (opcjonalnie)<input id="hours" type="text" placeholder="np. 5 godzin dydaktycznych"/></label>
+<label>Data szkolenia<input id="date" type="text" value="15 października 2026 r."/></label>
+</div>
+<label>Data wystawienia<input id="issueDate" type="text" value="29 października 2026 r."/></label>
+<label>Miejsce wystawienia<input id="place" type="text" value="Katowice"/></label>
+<label>Informacja o wydarzeniu (opcjonalnie)<textarea id="extraText" rows="4">Wydarzenie odbyło się w ramach projektu Akademia Biznesu realizowanego przez Centrum Karier i Współpracy z Absolwentami Uniwersytetu Ekonomicznego w Katowicach.</textarea></label>
+<label>Prowadzący na zaświadczeniu - każda osoba w nowym wierszu<textarea id="trainersList" placeholder="Imię i nazwisko prowadzącego" rows="3"></textarea></label>
+<label class="check"><input id="includeBack" type="checkbox" aria-describedby="includeBackHint"/> Dołącz tył do PDF-u</label>
+<p class="hint" id="includeBackHint">Zaznacz, aby dodać drugą stronę. Bez zaznaczenia PDF ma jedną stronę, nawet gdy treść odwrotu jest wpisana.</p>
+<label>Program / treść na odwrocie (opcjonalnie)<textarea id="programText" rows="8"></textarea></label>
+</section>
+<section class="card">
+<h2>3. Podpis elektroniczny</h2>
+<p class="hint">Wolne miejsce na podpis znajduje się nad funkcją zastępcy dyrektora. Możesz je przesunąć i zmienić jego szerokość w podglądzie.</p>
+<p class="hint">Po pobraniu podpisz PDF w używanym przez Ciebie programie do podpisu elektronicznego.</p>
+</section>
+<section class="card">
+<h2>4. Ustawienia zaznaczonego pola</h2>
+<p class="muted" id="selectedName">Kliknij pole lub podpis na dokumencie.</p>
+<div class="field-tools disabled" id="fieldTools">
+<div class="grid2">
+<label>Rozmiar<input id="fontSize" max="64" min="8" step="1" type="number"/></label>
+<label>Szerokość pola<input id="fieldWidth" max="95" min="10" step="1" type="number"/></label>
+</div>
+<label>Czcionka<select id="fontFamily"><option value="Georgia,serif">Georgia</option><option value="Arial,sans-serif">Arial</option><option value="'Times New Roman',serif">Times New Roman</option><option value="system-ui,sans-serif">Systemowa</option></select></label>
+<div class="toolbar"><button id="boldBtn" title="Pogrubienie"><b>B</b></button><button id="italicBtn" title="Kursywa"><i>I</i></button><button data-align="left">L</button><button data-align="center">C</button><button data-align="right">P</button></div>
+<button class="secondary" id="centerField">Wyśrodkuj na stronie</button>
+<button class="light" id="resetLayout">Przywróć układ szablonu</button>
+</div>
+</section>
+<section class="card">
+<h2>5. Prowadnice</h2>
+<label class="check"><input checked="" id="showCenter" type="checkbox"/> Środek strony</label>
+<label class="check"><input checked="" id="showSafe" type="checkbox"/> Bezpieczny obszar</label>
+<label class="check"><input id="showGrid" type="checkbox"/> Siatka</label>
+<p class="hint">Elementy przyciągają się do środka dokumentu. Podczas przesuwania pojawia się linia celowania.</p>
+</section>
+<section class="card actions">
+<h2>6. Generowanie seryjne</h2>
+<button class="primary" id="pdfCombined">PDF zbiorczy - wszystkie osoby</button>
+<button class="secondary" id="pdfSeparate">Osobne PDF-y - każda osoba</button>
+<button class="secondary" id="attendancePdf">Lista obecności PDF</button>
+<button class="light" id="csvExport">Wykaz certyfikatów CSV</button>
+<button class="primary" id="trainingPackage">Przygotuj paczkę dokumentacji szkolenia</button>
+<p class="hint" id="batchStatus">Gotowy do generowania.</p>
+<h2>7. Projekt</h2>
+<button class="secondary" id="saveProject">Zapisz projekt JSON</button>
+<label class="upload buttonlike">Wczytaj projekt JSON<input accept="application/json,.json" id="loadProject" type="file"/></label>
+</section>
+</aside>
+<main class="workspace">
+<div class="topbar"><span id="pageLabel">Przód zaświadczenia</span><span class="tip">Przeciągaj pola bezpośrednio na dokumencie</span></div>
+<div class="canvas-wrap">
+<div class="page" id="page">
+<img alt="Tło certyfikatu" class="background" id="background"/>
+<div class="guide center-v"></div><div class="guide center-h"></div><div class="safe-area"></div><div class="grid-overlay"></div>
+<div class="snap-guide vertical" id="snapGuideV"></div><div class="snap-guide horizontal" id="snapGuideH"></div>
+<div class="editable" data-key="heading">ZAŚWIADCZENIE</div>
+<div class="editable" data-key="intro">Potwierdza się udział wymienionej wyżej osoby w szkoleniu pt.</div>
+<div class="editable" data-key="name">Jan Kowalski</div>
+
+<div class="editable" data-key="training">Biznesplan krok po kroku</div>
+<div class="editable" data-key="trainingDate"></div>
+<div class="editable" data-key="hours"></div>
+<div class="editable" data-key="extra"></div>
+<div class="editable" data-key="trainers"></div>
+<div class="editable" data-key="placeDate">Katowice, 15 października 2026 r.</div>
+<div class="editable" data-key="number">Nr RC/001/2026</div>
+<div class="editable back-only" data-key="program">Program szkolenia</div>
+<div class="signature-fallback" id="signatureFallback"></div>
+</div>
+</div>
+</main>
+</div>
+<script src="js/jszip.min.js"></script>
+<script src="js/backgrounds.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

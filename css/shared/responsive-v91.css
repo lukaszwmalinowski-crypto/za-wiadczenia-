@@ -1,0 +1,168 @@
+/* ==========================================================
+   V91 — finalny audyt responsywności
+   Naprawia konflikty dwóch generacji ustawień CMS oraz
+   zabezpiecza wszystkie publiczne widoki przed overflow.
+   ========================================================== */
+
+html{max-width:100%;overflow-x:clip}
+body{max-width:100%;overflow-x:clip}
+*,*::before,*::after{box-sizing:border-box}
+:where(main,section,article,div,header,footer,nav,aside,figure,figcaption){min-width:0}
+:where(img,video,canvas,svg,iframe){max-width:100%}
+:where(img,video){height:auto}
+:where(p,h1,h2,h3,h4,h5,h6,li,a,button,label,legend,summary){overflow-wrap:break-word}
+:where(pre,code,.course-table-wrap,.compact-assessment-wrap){max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* Obiekty zmienione w CMS-ie: na dużym ekranie pozostają bez zmian,
+   natomiast tablet i telefon wracają do naturalnego przepływu strony. */
+@media(max-width:1194px){
+  body.public-page [data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id]{
+    translate:none!important;
+  }
+  body.public-page :where(p,h1,h2,h3,h4,span,div,article)[data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id]{
+    width:auto!important;
+    height:auto!important;
+    max-width:100%!important;
+  }
+  body.public-page img[data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id][data-cms-responsive-id]{
+    height:auto!important;
+    max-width:100%!important;
+  }
+
+  body.portal-v68 .home-eu-origin-copy>p{
+    width:auto!important;height:auto!important;max-width:68ch!important;translate:none!important;
+  }
+  body.portal-v68 .home-eu-origin-logo{
+    width:min(100%,190px)!important;height:auto!important;max-width:190px!important;translate:none!important;
+  }
+  body.portal-v68 .home-project-funding-side{
+    width:100%!important;height:auto!important;max-width:100%!important;translate:none!important;
+  }
+  body.portal-v68 .home-project-funding-side>p{
+    width:auto!important;height:auto!important;max-width:55ch!important;margin:0!important;translate:none!important;
+  }
+  body.portal-v68 .home-project-funding-side>img{
+    display:block!important;width:min(100%,320px)!important;height:auto!important;max-width:320px!important;margin:24px 0 0!important;translate:none!important;object-fit:contain!important;
+  }
+  body.portal-v68 .home-rd-logos img{
+    display:block!important;width:100%!important;height:auto!important;max-width:920px!important;margin-inline:auto!important;translate:none!important;object-fit:contain!important;
+  }
+
+  body.training-showcase-page :where(.training-showcase-copy p,.training-showcase-heading p,.training-feedback-points p,.training-cta-section h2,.training-cta-section p),
+  body.public-page :where(.signup-public-hero h1,.signup-public-hero p,.signup-training-intro h2,.signup-training-intro p,.public-section-head h2,.public-section-head p){
+    width:auto!important;height:auto!important;max-width:100%!important;translate:none!important;
+  }
+
+  body.public-page .v67-footer-logos :where(img,p){translate:none!important}
+}
+
+/* Tablet / iPad 11″ */
+@media(min-width:701px) and (max-width:1194px){
+  body.public-page .site-header-inner{width:100%;padding-inline:clamp(22px,4vw,42px)}
+  body.public-page .site-branding{min-width:0;max-width:calc(100% - 64px)}
+  body.public-page .site-funding-logos{min-width:0;flex-wrap:wrap}
+  body.public-page .site-nav{max-width:calc(100vw - 44px);overflow-y:auto}
+
+  body.portal-v68 .home-rd-section-heading,
+  body.portal-v68 .training-showcase-heading,
+  body.portal-v68 .public-section-head{grid-template-columns:1fr!important;gap:22px!important}
+  body.portal-v68 .home-rd-section-heading>p,
+  body.portal-v68 .training-showcase-heading>p,
+  body.portal-v68 .public-section-head>p{margin:0!important;max-width:66ch!important}
+
+  body.portal-v68 .training-showcase-copy{grid-template-columns:1fr 1fr!important;gap:28px!important}
+  body.portal-v68 .signup-calendar-embedded{width:100%;max-width:100%}
+  body.portal-v68 .calendar-board{width:100%;max-width:100%;overflow:hidden}
+
+  body.course-page .course-layout{min-width:0}
+  body.course-page .course-main,
+  body.course-page .course-section{min-width:0;max-width:100%}
+  body.course-page :where(.exercise-compact,.module-quiz,.course-workspace){max-width:100%}
+}
+
+/* Telefon */
+@media(max-width:700px){
+  html{scroll-padding-top:76px}
+  body{width:100%;min-width:0}
+  body :where(input,select,textarea,button){max-width:100%}
+  body :where(a,button,summary,input,select,textarea){touch-action:manipulation}
+
+  body.public-page .site-header-inner{width:100%;padding-inline:10px;gap:8px}
+  body.public-page .site-branding{min-width:0;max-width:calc(100% - 54px);gap:7px}
+  body.public-page .site-logo-project{flex:0 1 108px;min-width:0}
+  body.public-page .site-project-wordmark{width:100%!important;height:auto!important;max-height:44px;object-fit:contain}
+  body.public-page .site-funding-logos{min-width:0;gap:5px}
+  body.public-page .site-funding-logo{width:auto;max-width:min(72px,22vw);height:auto;max-height:22px;object-fit:contain}
+  body.public-page .nav-toggle{flex:0 0 46px}
+  body.public-page .site-nav{left:10px!important;right:10px!important;width:auto!important;max-width:calc(100vw - 20px)!important;max-height:calc(100svh - 90px);overflow-y:auto}
+
+  body.public-page :where(.public-btn,.home-rd-btn,.signup-contact-link){width:100%;min-width:0;white-space:normal;text-align:center;justify-content:center}
+  body.public-page :where(.home-rd-main,.training-showcase-main,.public-main,.online-catalog-main){width:100%;max-width:100%}
+  body.portal-v68 :where(.home-rd-section-heading,.training-showcase-heading,.public-section-head){grid-template-columns:1fr!important;gap:16px!important}
+  body.portal-v68 :where(.home-rd-section-heading,.training-showcase-heading,.public-section-head)>p{margin:0!important;max-width:100%!important}
+  body.portal-v68 .training-showcase-copy{grid-template-columns:1fr!important;gap:18px!important}
+  body.portal-v68 :where(.training-proof-strip,.training-audience-grid,.training-method-grid,.training-topic-grid,.signup-training-grid){grid-template-columns:1fr!important}
+  body.portal-v68 :where(.home-rd-final,.training-cta-section,.public-cta){grid-template-columns:1fr!important;gap:22px!important}
+
+  body.portal-v68 .home-project-funding-side{display:grid!important;gap:18px!important}
+  body.portal-v68 .home-project-funding-side>img{width:min(100%,250px)!important;margin:0!important}
+  body.portal-v68 .home-rd-logos{padding-inline:0!important}
+  body.portal-v68 .home-rd-logos img{max-height:none!important}
+
+  body.public-page .calendar-board-head,
+  body.public-page .calendar-controls,
+  body.public-page .calendar-layout{min-width:0;max-width:100%}
+  body.public-page .calendar-controls{grid-template-columns:1fr auto auto!important}
+  body.public-page .calendar-grid{min-width:0;max-width:100%}
+  body.public-page .calendar-day{min-width:0;padding-inline:3px}
+
+  body.course-page .course-topbar-inner,
+  body.course-page .course-layout,
+  body.course-page .course-main,
+  body.course-page .course-section,
+  body.course-page .course-workspace{width:100%;min-width:0;max-width:100%}
+  body.course-page :where(.course-section,.course-workspace,.module-quiz,.exercise-compact,.course-self-assessment){padding-left:clamp(12px,4vw,18px);padding-right:clamp(12px,4vw,18px)}
+  body.course-page :where(.course-workspace-head,.course-workspace-grid,.course-workspace-actions--pdf,.course-workspace-actions--progress,.compact-grid.two,.compact-grid.three){grid-template-columns:1fr!important}
+  body.course-page :where(.course-workspace button,.module-workbook-actions button,.module-bottom-nav button,.section-check){width:100%;min-width:0;white-space:normal}
+  body.course-page .compact-assessment{min-width:620px}
+  body.course-page .compact-assessment-wrap{width:100%;overflow-x:auto}
+  body.course-page :where(.course-media img,.course-figure img,.course-video-inline video,.legacy-media img){width:100%;height:auto;object-fit:contain}
+
+  .game-layout,.game,.intro-screen,.result-grid{min-width:0;max-width:100%}
+  .profile-stage iframe{max-width:100%}
+  .project-logo{max-width:min(220px,58vw)}
+  .brand-sub{white-space:normal}
+  .site-footer{max-width:100%}
+
+  body.generator-page .app{display:block!important;min-width:0!important}
+  body.generator-page .panel{position:relative!important;width:100%!important;height:auto!important;border-right:0!important}
+  body.generator-page .workspace{width:100%!important;min-height:0!important}
+  body.generator-page .canvas-wrap{width:100%!important;padding:14px!important;overflow-x:hidden!important}
+  body.generator-page .page{width:min(100%,720px)!important;max-width:100%!important;height:auto!important}
+  body.generator-page .topbar{height:auto!important;min-height:54px!important;gap:10px!important;flex-wrap:wrap!important;padding:10px 14px!important}
+}
+
+@media(max-width:390px){
+  body.public-page .site-funding-logos{display:none}
+  body.public-page .site-logo-project{flex-basis:132px}
+  body.public-page .calendar-controls{grid-template-columns:1fr 1fr!important}
+  body.public-page .calendar-controls>*:first-child{grid-column:1/-1}
+  .category-card{padding-inline:16px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+/* V92/V93: filmy zapraszające oraz oznaczenia AI. */
+.home-rd-program-grid .home-rd-program{min-width:0}
+body.public-page.home-rd .home-rd-program-grid .home-rd-program{grid-template-columns:clamp(60px,6vw,90px) minmax(420px,1.25fr) minmax(300px,.75fr)!important;gap:clamp(20px,3vw,42px)!important}
+body.public-page.home-rd .home-rd-program-grid .home-rd-program>.home-rd-number{grid-column:1}
+body.public-page.home-rd .home-rd-program-grid .home-rd-program>.home-program-video{grid-column:2}
+body.public-page.home-rd .home-rd-program-grid .home-rd-program>div:not(.home-program-video){grid-column:3}
+body.public-page.home-rd .home-rd-program-grid .home-rd-program>.home-rd-program-outcome{grid-column:2/4}
+.home-program-video{position:relative;width:100%;margin:0;min-width:0}
+.home-program-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px;background:#111;box-shadow:0 10px 26px rgba(19,55,52,.14)}
+.home-program-video-ai{display:block;margin-top:8px;color:#6f7775;font-size:11px;line-height:1.35;letter-spacing:.01em;text-align:right}
+@media(max-width:900px){body.public-page.home-rd .home-rd-program-grid .home-rd-program{grid-template-columns:1fr!important;gap:20px!important}body.public-page.home-rd .home-rd-program-grid .home-rd-program>*{grid-column:1!important}body.public-page.home-rd .home-rd-program-grid .home-rd-program>.home-rd-program-outcome{padding-left:18px!important}}
+@media(max-width:700px){.home-program-video video{border-radius:10px}.home-program-video-ai{font-size:10px}}
